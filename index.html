@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelMaster - 스마트 여행 계획 플래너</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-plane-departure"></i>
+                <h1>TravelMaster</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">홈</a></li>
+                    <li><a href="#planner">여행계획</a></li>
+                    <li><a href="#about">소개</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>완벽한 여행을 계획하세요</h2>
+            <p>실시간 교통정보, 최적 경로, 맞춤형 추천까지 - 당신만의 여행 플래너</p>
+            <button class="cta-button" onclick="scrollToPlanner()">
+                <i class="fas fa-rocket"></i> 지금 시작하기
+            </button>
+        </div>
+    </section>
+
+    <!-- Main Planner Section -->
+    <section class="planner-section" id="planner">
+        <div class="container">
+            <h2 class="section-title">여행 계획 만들기</h2>
+
+            <!-- Step 1: Basic Info -->
+            <div class="planner-card" id="step1">
+                <div class="card-header">
+                    <div class="step-indicator">
+                        <span class="step-number">1</span>
+                        <span class="step-title">기본 정보</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="departure">
+                                <i class="fas fa-map-marker-alt"></i> 출발지
+                            </label>
+                            <input type="text" id="departure" placeholder="예: 서울역" autocomplete="off">
+                            <div id="departure-suggestions" class="suggestions"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="destination">
+                                <i class="fas fa-flag-checkered"></i> 도착지
+                            </label>
+                            <input type="text" id="destination" placeholder="예: 부산역" autocomplete="off">
+                            <div id="destination-suggestions" class="suggestions"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="departure-time">
+                                <i class="fas fa-clock"></i> 출발 시간
+                            </label>
+                            <input type="datetime-local" id="departure-time">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="duration">
+                                <i class="fas fa-calendar-alt"></i> 여행 기간 (일)
+                            </label>
+                            <input type="number" id="duration" min="1" max="30" value="3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Preferences -->
+            <div class="planner-card" id="step2">
+                <div class="card-header">
+                    <div class="step-indicator">
+                        <span class="step-number">2</span>
+                        <span class="step-title">여행 취향</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="preferences-grid">
+                        <div class="preference-category">
+                            <h4><i class="fas fa-heart"></i> 관심사</h4>
+                            <div class="preference-options">
+                                <label class="preference-tag">
+                                    <input type="checkbox" name="interest" value="history">
+                                    <span>역사/문화</span>
+                                </label>
+                                <label class="preference-tag">
+                                    <input type="checkbox" name="interest" value="nature">
+                                    <span>자연/풍경</span>
+                                </label>
+                                <label class="preference-tag">
+                                    <input type="checkbox" name="interest" value="food">
+                                    <span>맛집 탐방</span>
+                                </label>
+                                <label class="preference-tag">
+                                    <input type="checkbox" name="interest" value="shopping">
+                                    <span>쇼핑</span>
+                                </label>
+                                <label class="preference-tag">
+                                    <input type="checkbox" name="interest" value="activities">
+                                    <span>액티비티</span>
+                                </label>
+                                <label class="preference-tag">
+                                    <input type="checkbox" name="interest" value="photo">
+                                    <span>사진 명소</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="preference-category">
+                            <h4><i class="fas fa-utensils"></i> 음식 취향</h4>
+                            <div class="preference-options">
+                                <label class="preference-tag">
+                                    <input type="checkbox" name="food" value="korean">
+                                    <span>한식</span>
+                                </label>
+                                <label class="preference-tag">
+                                    <input type="checkbox" name="food" value="seafood">
+                                    <span>해산물</span>
+                                </label>
+                                <label class="preference-tag">
+                                    <input type="checkbox" name="food" value="cafe">
+                                    <span>카페</span>
+                                </label>
+                                <label class="preference-tag">
+                                    <input type="checkbox" name="food" value="local">
+                                    <span>로컬 맛집</span>
+                                </label>
+                                <label class="preference-tag">
+                                    <input type="checkbox" name="food" value="fine-dining">
+                                    <span>파인 다이닝</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="preference-category">
+                            <h4><i class="fas fa-wallet"></i> 예산 범위</h4>
+                            <div class="budget-slider">
+                                <input type="range" id="budget" min="0" max="3" value="1" step="1">
+                                <div class="budget-labels">
+                                    <span>경제적</span>
+                                    <span>보통</span>
+                                    <span>여유</span>
+                                    <span>럭셔리</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="preference-category">
+                            <h4><i class="fas fa-tachometer-alt"></i> 여행 스타일</h4>
+                            <div class="preference-options">
+                                <label class="preference-tag">
+                                    <input type="radio" name="pace" value="relaxed">
+                                    <span>여유롭게</span>
+                                </label>
+                                <label class="preference-tag">
+                                    <input type="radio" name="pace" value="moderate" checked>
+                                    <span>적당히</span>
+                                </label>
+                                <label class="preference-tag">
+                                    <input type="radio" name="pace" value="packed">
+                                    <span>알차게</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Transportation Options -->
+            <div class="planner-card" id="step3">
+                <div class="card-header">
+                    <div class="step-indicator">
+                        <span class="step-number">3</span>
+                        <span class="step-title">교통 옵션</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="transport-options">
+                        <label class="transport-card">
+                            <input type="checkbox" name="transport" value="train" checked>
+                            <div class="transport-icon">
+                                <i class="fas fa-train"></i>
+                            </div>
+                            <span>기차</span>
+                        </label>
+                        <label class="transport-card">
+                            <input type="checkbox" name="transport" value="bus" checked>
+                            <div class="transport-icon">
+                                <i class="fas fa-bus"></i>
+                            </div>
+                            <span>버스</span>
+                        </label>
+                        <label class="transport-card">
+                            <input type="checkbox" name="transport" value="plane" checked>
+                            <div class="transport-icon">
+                                <i class="fas fa-plane"></i>
+                            </div>
+                            <span>비행기</span>
+                        </label>
+                        <label class="transport-card">
+                            <input type="checkbox" name="transport" value="car">
+                            <div class="transport-icon">
+                                <i class="fas fa-car"></i>
+                            </div>
+                            <span>렌터카</span>
+                        </label>
+                    </div>
+
+                    <div class="optimization-options">
+                        <h4>최적화 옵션</h4>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="optimization" value="time" checked>
+                                <span><i class="fas fa-clock"></i> 최단 시간</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="optimization" value="cost">
+                                <span><i class="fas fa-won-sign"></i> 최저 비용</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="optimization" value="balance">
+                                <span><i class="fas fa-balance-scale"></i> 균형</span>
+                            </label>
+                        </div>
+                        <label class="checkbox-option">
+                            <input type="checkbox" id="include-discounts" checked>
+                            <span>취소표 및 할인 포함</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generate Button -->
+            <div class="action-center">
+                <button class="generate-button" onclick="generatePlan()">
+                    <i class="fas fa-magic"></i> 여행 계획 생성하기
+                </button>
+            </div>
+
+            <!-- Loading Animation -->
+            <div id="loading" class="loading-container" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>AI가 최적의 여행 계획을 생성하고 있습니다...</p>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results" class="results-section" style="display: none;">
+                <!-- Summary Cards -->
+                <div class="summary-cards">
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h4>총 소요시간</h4>
+                            <p id="total-time">-</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-won-sign"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h4>예상 비용</h4>
+                            <p id="total-cost">-</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h4>총 이동거리</h4>
+                            <p id="total-distance">-</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h4>방문 장소</h4>
+                            <p id="total-places">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Container -->
+                <div class="map-container">
+                    <h3><i class="fas fa-map"></i> 경로 지도</h3>
+                    <div id="map"></div>
+                </div>
+
+                <!-- Transportation Options Comparison -->
+                <div class="transport-comparison">
+                    <h3><i class="fas fa-exchange-alt"></i> 교통수단 비교</h3>
+                    <div id="transport-options-container"></div>
+                </div>
+
+                <!-- Daily Itinerary -->
+                <div class="itinerary-container">
+                    <h3><i class="fas fa-calendar-check"></i> 일정표</h3>
+                    <div id="daily-itinerary"></div>
+                </div>
+
+                <!-- Cost Breakdown -->
+                <div class="cost-breakdown">
+                    <h3><i class="fas fa-receipt"></i> 비용 상세</h3>
+                    <div id="cost-details"></div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="result-actions">
+                    <button class="action-btn primary" onclick="saveItinerary()">
+                        <i class="fas fa-save"></i> 일정 저장
+                    </button>
+                    <button class="action-btn secondary" onclick="shareItinerary()">
+                        <i class="fas fa-share-alt"></i> 공유하기
+                    </button>
+                    <button class="action-btn tertiary" onclick="printItinerary()">
+                        <i class="fas fa-print"></i> 인쇄
+                    </button>
+                    <button class="action-btn" onclick="resetPlanner()">
+                        <i class="fas fa-redo"></i> 새로 계획하기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 TravelMaster. All rights reserved.</p>
+            <p>Smart Travel Planning with Real-time Data</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places,geometry,directions"></script>
+    <script src="script.js"></script>
+</body>
+</html>
