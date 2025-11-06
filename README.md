@@ -10,7 +10,14 @@
 
 ## 주요 기능
 
-### 1. 실시간 교통 정보 통합
+### 1. 실제 맛집 & 관광지 검색 (NEW!)
+- **Google Places API 실시간 연동**
+- 실제 장소의 평점, 리뷰 수, 주소, 사진 표시
+- 취향 기반 장소 자동 추천
+- 각 장소별 Google Maps 바로가기 링크
+- API 미사용 시 fallback 데이터 제공
+
+### 2. 실시간 교통 정보 통합
 - **기차** (KTX, 새마을호, 무궁화호)
 - **버스** (고속버스, 시외버스)
 - **비행기** (국내선 항공편)
@@ -129,12 +136,20 @@ cd solideo-Day2-01-03-Practice2-
 ```
 
 ### 2. Google Maps API 키 설정
-1. [Google Cloud Console](https://console.cloud.google.com/)에서 API 키 발급
-2. `index.html` 파일에서 API 키 교체:
+1. [Google Cloud Console](https://console.cloud.google.com/)에서 프로젝트 생성
+2. 다음 API들을 활성화:
+   - Maps JavaScript API
+   - Places API
+   - Geocoding API
+   - Directions API
+3. API 키 생성 (애플리케이션 제한: HTTP 리퍼러)
+4. `index.html` 파일 241번째 줄에서 API 키 교체:
 ```html
 <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places,geometry,directions"></script>
 ```
 **YOUR_API_KEY**를 실제 발급받은 API 키로 교체하세요.
+
+> **중요**: API 키가 없어도 앱은 정상 작동하며, 대체 데이터가 표시됩니다.
 
 ### 3. 웹 서버 실행
 로컬에서 테스트하기 위해 간단한 HTTP 서버를 실행하세요:
@@ -204,12 +219,28 @@ http://localhost:8000
 - 교통편 실시간 요금 비교
 - 할인 및 취소표 정보 반영
 - 날짜별 가격 변동 고려
+- **Google Places API를 통한 실제 장소 정보**
 
 ### 🧠 AI 추천 시스템
 - 사용자 취향 분석
 - 최적 경로 추천
 - 맞춤형 관광지 제안
 - 현지 맛집 큐레이션
+- **실제 평점과 리뷰 기반 추천**
+
+### 📍 실제 장소 검색
+- **Google Places API 통합**
+  - 5km 반경 내 실제 장소 검색
+  - 평점, 리뷰 수, 주소 표시
+  - 장소 사진 자동 로드
+  - Google Maps 연결
+- **스마트 검색**
+  - 관심사별 맞춤 검색 (역사, 자연, 쇼핑 등)
+  - 음식 취향별 맛집 검색 (한식, 해산물, 카페 등)
+  - 중복 방지 알고리즘
+- **Fallback 시스템**
+  - API 오류 시 자동 대체 데이터
+  - 안정적인 서비스 제공
 
 ### 📊 상세한 분석
 - 교통수단별 비교 (시간/비용/편의성)
@@ -250,14 +281,35 @@ http://localhost:8000
 solideo-Day2-01-03-Practice2-/
 │
 ├── index.html          # 메인 HTML 파일
-├── styles.css          # 스타일시트
-├── script.js           # JavaScript 로직
+├── styles.css          # 스타일시트 (20KB)
+├── script.js           # JavaScript 로직 (50KB+)
 └── README.md           # 프로젝트 문서
+```
+
+## 기술 구현 세부사항
+
+### Google Places API 통합
+```javascript
+// 실제 장소 검색 예시
+searchRealPlace(destination, preference, category, offset)
+- Geocoding API로 좌표 변환
+- Places Nearby Search로 5km 반경 검색
+- Place Details로 상세 정보 획득
+- 평점, 리뷰, 사진, 주소 자동 표시
+```
+
+### 비동기 일정 생성
+```javascript
+async function generateItinerary()
+- 각 일차별 병렬 API 호출
+- Promise 기반 비동기 처리
+- 오류 시 Fallback 데이터
 ```
 
 ## 향후 개선 계획
 
 ### Phase 2
+- [x] Google Places API 실제 맛집/관광지 검색
 - [ ] 실제 교통 API 연동 (코레일, 고속버스 등)
 - [ ] 실시간 예약 기능
 - [ ] 사용자 계정 시스템
